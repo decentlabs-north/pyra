@@ -1,8 +1,8 @@
 [`pure | 📦`](https://github.com/telamon/create-pure)
 [`code style | standard`](https://standardjs.com/)
 ```
-._   .__. 
-|_)\/|(_| 
+._   .__.
+|_)\/|(_|
 |  /
 ```
 
@@ -15,7 +15,24 @@ $ yarn && yarn start
 ```
 Point your browser to localhost:5000 and enjoy!
 
+
+## Run production
 If you're running your own, [let's link up!](https://discord.gg/8RMRUPZ9RS)
+
+Launch-script with defaults:
+
+```bash
+#!/bin/sh
+echo "Launching pyra"
+
+NODE_ENV=production \
+  PORT=5000 \
+  STATIC=pub/ \
+  DATA=data/ \
+  MAINTAINER=your.email@tld.com \
+  OPENAI_API_KEY=sk-XXXXX \
+  npm start
+```
 
 ## License
 

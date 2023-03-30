@@ -6,9 +6,9 @@ import SSL from 'greenlock-express'
 import Designer from './gptdesigner.js'
 import { join } from 'node:path'
 
-const PORT = process.env.PORT ?? 5000
+const PORT = parseInt(process.env.PORT ?? 5000)
 const STATIC = process.env.STATIC ?? 'pub/'
-const DATA = process.env.DB ?? 'data/'
+const DATA = process.env.DATA ?? 'data/'
 const DB = join(DATA, 'silo.lvl')
 const MAINTAINER = process.env.MAINTAINER ?? 'bob@tld.com'
 
@@ -54,4 +54,5 @@ globalThis.crypto = {
   },
   ...(await import('node:crypto'))
 }
-}*/
+}
+*/
