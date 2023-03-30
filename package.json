@@ -33,6 +33,7 @@
   "dependencies": {
     "@polka/send-type": "^0.5.2",
     "body-parser": "^1.20.2",
+    "greenlock-express": "^4.0.3",
     "level": "^8.0.0",
     "picofeed": "^3.4.2",
     "picotool": "^0.1.0",
