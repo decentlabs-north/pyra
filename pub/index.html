@@ -1,20 +1,26 @@
 <!doctype html>
 <html>
   <head>
-    <title>Reboot.io</title>
+    <title>reboot dags</title>
     <meta charset="UTF-8" />
-    <link rel="stylesheet" href="https://unpkg.com/98.css">
+    <script type="module" async src="/build/bundle.js"></script>
   </head>
-  <body>
-    <!--<h1>Pico Web Application</h1>-->
-    <div class="window" style="margin: 32px; width: 250px">
-      <div class="title-bar">
-        <div class="title-bar-text">picobrowser</div>
-      </div>
-      <div class="window-body">
-        <p>A is a single file progressive web application</p>
-        <p>Jag har slut på juice</p>
-      </div>
-    </div>
+  <body load="poweron">
+    <h1>Pico Web Application</h1>
+    <p>A is a single file progressive web application</p>
+
+    <textarea id="htmleditor">
+      <html>
+        <head>
+          <title>Kentaurus</title>
+        </head>
+        <body>
+          cool hemsida
+        </body>
+      </html>
+    </textarea>
+    <button id="publish">Publicera</button>
+    <pre>https://dinurl.se/bob</pre>
+    <div id="boot"></div>
   </body>
 </html>

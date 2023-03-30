@@ -5,10 +5,7 @@ import WebSilo from 'picotool/web-silo.js'
 import { Level } from 'level'
 
 // TODO: this does not belong here
-const assets = sirv('pub/', {
-  maxAge: 31536000, // 1Y
-  immutable: true
-})
+const assets = sirv('pub/')
 const db = new Level('silo.lvl')
 const silo = WebSilo(db)
 polka()

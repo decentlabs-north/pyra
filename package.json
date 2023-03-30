@@ -1,7 +1,7 @@
 {
   "name": "pyra",
   "version": "0.1.0",
-  "description": "Tiny Pyramid",
+  "description": "Tiny Pyramid (Pico-Silo)",
   "type": "module",
   "main": "index.js",
   "scripts": {
@@ -33,12 +33,10 @@
   "dependencies": {
     "@polka/send-type": "^0.5.2",
     "body-parser": "^1.20.2",
-    "esbuild": "^0.17.14",
     "level": "^8.0.0",
     "picofeed": "^3.4.2",
     "picotool": "^0.1.0",
     "polka": "^0.5.2",
-    "sirv": "^2.0.2",
-    "tuicss": "^2.1.1"
+    "sirv": "^2.0.2"
   }
 }
