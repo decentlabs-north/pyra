@@ -1,12 +1,11 @@
 {
   "name": "pyra",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "Tiny Pyramid (Pico-Silo)",
   "type": "module",
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
-    "build": "node build.js",
     "lint": "standard",
     "test": "brittle test.js",
     "cov": "c8 npm test",
@@ -15,14 +14,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git://https://github.com/telamon/pyra"
+    "url": "https://github.com/decentlabs-north/pyra"
   },
   "author": "Tony Ivanov",
   "license": "AGPL-3.0-or-later",
   "bugs": {
-    "url": "https://github.com/telamon/pyra"
+    "url": "https://github.com/decentlabs-north/pyra/issues"
   },
-  "homepage": "https://github.com/telamon/pyra",
+  "homepage": "https://github.com/decentlabs-north/pyra",
   "devDependencies": {
     "brittle": "^3.2.1",
     "c8": "^7.13.0",
@@ -35,9 +34,11 @@
     "body-parser": "^1.20.2",
     "greenlock-express": "^4.0.3",
     "level": "^8.0.0",
+    "openai": "^3.2.1",
     "picofeed": "^3.4.2",
     "picotool": "^0.1.0",
     "polka": "^0.5.2",
+    "pretty": "^2.0.0",
     "sirv": "^2.0.2"
   }
 }

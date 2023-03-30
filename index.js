@@ -1,31 +1,32 @@
 import sirv from 'sirv'
-import bparser from 'body-parser'
 import polka from 'polka'
 import WebSilo from 'picotool/web-silo.js'
 import { Level } from 'level'
 import SSL from 'greenlock-express'
+import Designer from './gptdesigner.js'
+import { join } from 'node:path'
 
 const PORT = process.env.PORT ?? 5000
 const STATIC = process.env.STATIC ?? 'pub/'
-const DB = process.env.DB ?? 'silo.lvl'
+const DATA = process.env.DB ?? 'data/'
+const DB = join(DATA, 'silo.lvl')
 const MAINTAINER = process.env.MAINTAINER ?? 'bob@tld.com'
 
 export default function Backend () {
   const assets = sirv(STATIC)
   const db = new Level(DB)
   const silo = WebSilo(db)
-
   return polka()
     .use(assets)
-    .use(bparser.json())
-    .use('silo', silo)
+    .use('/designer', Designer())
+    .use('/silo', silo)
 }
 if (process.env.NODE_ENV === 'production') {
   process.on('unhandledRejection', err => console.error('Unhandled rejection:', err))
   const b = Backend()
   SSL.init({
     packageRoot: __dirname,
-    configDir: './greenlock.d',
+    configDir: join(DATA, 'greenlock.d'),
     maintainerEmail: MAINTAINER,
     cluster: false
   })
