@@ -25,8 +25,8 @@ if (process.env.NODE_ENV === 'production') {
   process.on('unhandledRejection', err => console.error('Unhandled rejection:', err))
   const b = Backend()
   SSL.init({
-    packageRoot: DATA,
-    configDir: 'greenlock.d',
+    packageRoot: '.',
+    configDir: join(DATA, 'greenlock.d'),
     maintainerEmail: MAINTAINER,
     cluster: false
   })
