@@ -2,7 +2,7 @@ FROM node:16-alpine
 
 
 EXPOSE 80
-expose 443
+EXPOSE 443
 WORKDIR /app
 ENV PORT=80
 ENV NODE_ENV=production
