@@ -34,7 +34,7 @@
     "level": "^8.0.0",
     "openai": "^3.2.1",
     "picofeed": "^3.4.2",
-    "picotool": "^0.1.0",
+    "picotool": "^0.1.2",
     "polka": "^0.5.2",
     "pretty": "^2.0.0",
     "sirv": "^2.0.2"

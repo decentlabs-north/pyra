@@ -61,7 +61,9 @@
   </head>
 
   <body>
-    <script>
+    <script type="module">
+      import { pack } from './tool.js'
+      console.log('Function pack() imported successfully', pack)
       const checkpoints = []
       async function generate() {
         if (nEl('prompt').disabled) return
