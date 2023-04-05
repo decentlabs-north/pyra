@@ -61,8 +61,46 @@
   </head>
 
   <body>
+    <h1>Welcome to New Web Maker</h1>
+    <p>
+      Create your own PWA (PicoWebApp) in minutes using prompt driven development<br/>
+      Our easy-to-use platform allows you to build a professional-looking website without writing a single line of code!<br/>
+      Go ahead, describe your new website in the prompt:
+    </p>
+    <div id="spinner" class="lds-spinner"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+    <toy-browser>
+      <address-bar>
+        <a href="https://reboot.one" style="float: right">🔌</a>
+        <button id="btn-back">⬅️</button>
+        <button disabled="true">➡️</button>
+        <input type="text" id="prompt" name="prompt" value="Cool Website from the Future">
+        <button id="btn-generate" type="button">🌍</button>
+        <button id="btn-publish" title="Publish page">🚀 </button>
+        <loading></loading>
+      </address-bar>
+      <iframe id="render"></iframe>
+    </toy-browser>
+    <h1>&nbsp;</h1>
+    <h3>view-source://</h3>
+    <textarea id="sourcecode" rows="20" cols="80">
+      <!DOCTYPE html>
+      <html>
+        <head>
+          <meta charset="utf-8">
+          <title>Minimal Website</title>
+          <style>
+            body { color: #333; background-color: #eee; }
+          </style>
+        </head>
+        <body>
+          <h1>Welcome to my website</h1>
+          <p>This is an extremely minimal but complete website in HTML.</p>
+        </body>
+      </html>
+    </textarea>
+
     <script type="module">
-      import { pack } from './tool.js'
+      import { pack, Feed } from './tool.js'
       console.log('Function pack() imported successfully', pack)
       const checkpoints = []
       async function generate() {
@@ -87,72 +125,70 @@
         }
         setLoading(false)
       }
+
       function refresh () {
         console.info('Rerender')
         const src = nEl('sourcecode').value
         const frame = nEl('render').srcdoc = src
       }
+
       function back () {
+        console.log('BackButton Pressed')
         if (!checkpoints.length) return
         const { html, prompt } = checkpoints.pop()
         nEl('sourcecode').value = html
         nEl('prompt').value = prompt
         refresh()
       }
+
       function nEl(id) { return document.getElementById(id) }
+
       function setLoading (visible) {
         nEl('prompt').disabled = !!visible
         if (visible) nEl('spinner').style.display = 'inline-block'
         else nEl('spinner').style.display = 'none'
       }
+
       function main () {
-      }
-      document.addEventListener('DOMContentLoaded', function main () {
         nEl('prompt').addEventListener('keyup', function(event) {
           if (event.keyCode === 13) generate()
         })
         refresh()
         setLoading(false)
         console.log('booted')
-      })
-    </script>
-    <h1>Welcome to New Web Maker</h1>
-    <p>
-      Create your own PWA (PicoWebApp) in minutes using prompt driven development<br/>
-      Our easy-to-use platform allows you to build a professional-looking website without writing a single line of code!<br/>
-      Go ahead, describe your new website in the prompt:
-    </p>
-    <div id="spinner" class="lds-spinner"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
-    <toy-browser>
-      <address-bar>
-        <a href="https://reboot.one" style="float: right">🔌</a>
-        <button onclick="back()">⬅️</button>
-        <button disabled="true">➡️</button>
-        <input type="text" id="prompt" name="prompt" value="Cool Website from the Future">
-        <button type="button" onclick="generate()">🌍</button>
-        <button id="publish" disabled="true" title="Publish page">🚀 </button>
-        <loading></loading>
-      </address-bar>
-      <iframe id="render"></iframe>
-    </toy-browser>
-    <h1>&nbsp;</h1>
-    <h3>view-source://</h3>
-    <textarea id="sourcecode" rows="20" cols="80" onchange="refresh()">
-      <!DOCTYPE html>
-      <html>
-        <head>
-          <meta charset="utf-8">
-          <title>Minimal Website</title>
-          <style>
-            body { color: #333; background-color: #eee; }
-          </style>
-        </head>
-        <body>
-          <h1>Welcome to my website</h1>
-          <p>This is an extremely minimal but complete website in HTML.</p>
-        </body>
-      </html>
-    </textarea>
+        // Add on click on back button.
+        nEl('btn-back').addEventListener('click', back)
+        nEl('btn-generate').addEventListener('click', generate)
+        nEl('btn-publish').addEventListener('click', share)
+        nEl('sourcecode').addEventListener('change', refresh)
+      }
 
+      async function share () {
+        console.log('Publishing website')
+        const srcEl = nEl("sourcecode")
+        const src = srcEl.value
+
+        const { sk, pk } = Feed.signPair()
+        console.log('secret, public', sk.toString('hex'), pk.toString('hex'))
+
+        const feed = pack(sk, src.trim())
+        console.log(typeof feed)
+        const payload = { html: src };
+        const endpoint = "/silo/" + pk.toString('hex')
+        const res = await fetch(endpoint, {
+          method: 'POST',
+          headers: { 'Content-Type': 'pico/feed' },
+          body: feed.buf.slice(0, feed.tail)
+        })
+
+        if (res.status !== 201) {
+          console.error('Something went wrong:', await res.text())
+        } else {
+          console.error('Successfully published to', endpoint)
+        }
+      }
+
+      document.addEventListener('DOMContentLoaded', main)
+    </script>
   </body>
 </html>
