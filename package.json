@@ -23,8 +23,12 @@
   },
   "homepage": "https://github.com/decentlabs-north/pyra",
   "devDependencies": {
+    "@socketsupply/tonic": "^15.1.1",
     "brittle": "^3.2.1",
     "c8": "^7.13.0",
+    "esbuild": "^0.17.15",
+    "node-stdlib-browser": "^1.2.0",
+    "piconuro": "^1.0.1",
     "standard": "^17.0.0"
   },
   "dependencies": {

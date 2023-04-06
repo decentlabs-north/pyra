@@ -1,8 +1,8 @@
 node_modules/
 yarn.lock
+package-lock.json
 yarn-error.log
 silo.lvl/
-pub/build/
-
-
+pub/designer.js
+pub/designer.js.map
 

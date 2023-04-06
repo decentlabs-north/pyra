@@ -182,10 +182,16 @@
         })
 
         if (res.status !== 201) {
+          return
           console.error('Something went wrong:', await res.text())
-        } else {
-          console.error('Successfully published to', endpoint)
         }
+
+        console.log('Successfully published to', endpoint)
+        // TODO: give endpoint/url to user so they can share
+
+        // TODO: spara secret key till localstorage så användare
+        // kan uppdatera sin hemsida.
+        // TODO: window.localStorage.setItem('mypage1', sk)
       }
 
       document.addEventListener('DOMContentLoaded', main)
