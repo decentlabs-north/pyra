@@ -8,6 +8,8 @@
     "start": "node index.js",
     "lint": "standard",
     "test": "brittle test.js",
+    "designer": "node build.js",
+    "build": "NODE_ENV=production node build.js",
     "cov": "c8 npm test",
     "debug": "node inspect $(npm bin)/brittle test.js",
     "prepublishOnly": "standard && npm test"

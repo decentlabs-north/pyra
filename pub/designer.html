@@ -2,199 +2,83 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>Pico Web Maker</title>
+    <title>PWA Designer</title>
     <style>
+      :root {
+        --frame: #bec5bd;
+        --content-height: 50vh;
+      }
+
       body {
         font-size: 18px;
-        font-family: Arial, sans-serif;
-        text-align: center;
+        /* font-family: Arial, sans-serif;*/
+        font-family: "SF Pro Text", 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif !important;
+        margin: 0;
+        padding: 0;
         padding-top: 50px;
-      }
-      body {
         background-color: #8a2be2;
         background-image: linear-gradient(150deg, #8a2be2, midnightblue);
         color: white;
-        height: 100%;
         width: 100%;
       }
-      toy-browser {
+
+      footer {
         display: block;
-        max-width: 80vh;
-        border: 3px solid gray;
-        border-radius: 5px;
-        margin-left: auto;
-        margin-right: auto;
-        background-color: gray;
-        padding: 2px;
-      }
-      iframe {
-        width: 100%;
-        height: 600px;
-        overflow: scroll;
-        border: none;
-        background-color: white;
-      }
-      toy-browser address-bar {
-        text-align: left;
-        background-color: gray;
-        display: block;
-        width: 100%;
-        padding: 4px 0;
-      }
-      #prompt {
-        display: inline-block;
-        width: 70%;
-        height: 1.3em;
-      }
-      #sourcecode {
-        background-color: #333;
-        color: white;
-        padding: 8px 4px;
-        border: 3px solid #333;
-        border-radius: 5px;
-        font-size: 1.1em;
-        max-width: 80vw;
+        padding: 2em;
+        text-align: center;
+        color: #333;
       }
       /* ai-minified spinner */
       .lds-spinner{color:official;display:inline-block;position:relative;width:80px;height:80px}.lds-spinner div{transform-origin:40px 40px;animation:lds-spinner 1.2s linear infinite}.lds-spinner div:after{content:" ";display:block;position:absolute;top:3px;left:37px;width:6px;height:18px;border-radius:20%;background:#fff}.lds-spinner div:nth-child(1){transform:rotate(0deg);animation-delay:-1.1s}.lds-spinner div:nth-child(2){transform:rotate(30deg);animation-delay:-1s}.lds-spinner div:nth-child(3){transform:rotate(60deg);animation-delay:-0.9s}.lds-spinner div:nth-child(4){transform:rotate(90deg);animation-delay:-0.8s}.lds-spinner div:nth-child(5){transform:rotate(120deg);animation-delay:-0.7s}.lds-spinner div:nth-child(6){transform:rotate(150deg);animation-delay:-0.6s}.lds-spinner div:nth-child(7){transform:rotate(180deg);animation-delay:-0.5s}.lds-spinner div:nth-child(8){transform:rotate(210deg);animation-delay:-0.4s}.lds-spinner div:nth-child(9){transform:rotate(240deg);animation-delay:-0.3s}.lds-spinner div:nth-child(10){transform:rotate(270deg);animation-delay:-0.2s}.lds-spinner div:nth-child(11){transform:rotate(300deg);animation-delay:-0.1s}.lds-spinner div:nth-child(12){transform:rotate(330deg);animation-delay:0}@keyframes lds-spinner{0%{opacity:1}100%{opacity:0}}
+
+      /* picoflex.css */
+      row, column, column-reverse, row-reverse, .flex {display:flex;}
+      row, .row {flex-direction: row;}
+      row-reverse, .row-reverse{flex-direction: row-reverse;}
+      column, col, .column, .col {flex-direction: column;}
+      column-reverse, .column-reverse{flex-direction: column-reverse;}
+      .wrap{flex-wrap: wrap;}
+      .wrap-reverse{flex-wrap: wrap-reverse;}
+      .nowrap{flex-wrap: nowrap;}
+      .space-around{ justify-content: space-around; }
+      .space-between{ justify-content: space-between; }
+      .start{ justify-content: flex-start; }
+      .end{ justify-content: flex-end; }
+      .center{ justify-content: center; }
+      .xstart{ align-items: flex-start; }
+      .xend{ align-items: flex-end; }
+      .xcenter{ align-items: center; }
+      .xbaseline{ align-items: baseline; }
+      .xstrech { align-items: strech; }
+      .grow1{ flex-grow: 1; }
+      .grow2{ flex-grow: 2; }
+      .grow3{ flex-grow: 3; }
+      .grow4{ flex-grow: 4; }
+      .text-right{ text-align: right;}
+      .text-left{ text-align: left;}
+      .text-center{ text-align: center;}
+      .text-start{ text-align: start;}
+      .text-end{ text-align: end; }
+      .pull-right{ float: right; }
     </style>
   </head>
 
   <body>
-    <h1>Welcome to New Web Maker</h1>
-    <p>
-      Create your own PWA (PicoWebApp) in minutes using prompt driven development<br/>
-      Our easy-to-use platform allows you to build a professional-looking website without writing a single line of code!<br/>
-      Go ahead, describe your new website in the prompt:
-    </p>
-    <div id="spinner" class="lds-spinner"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
-    <toy-browser>
-      <address-bar>
-        <a href="https://reboot.one" style="float: right">🔌</a>
-        <button id="btn-back">⬅️</button>
-        <button disabled="true">➡️</button>
-        <input type="text" id="prompt" name="prompt" value="Cool Website from the Future">
-        <button id="btn-generate" type="button">🌍</button>
-        <button id="btn-publish" title="Publish page">🚀 </button>
-        <loading></loading>
-      </address-bar>
-      <iframe id="render"></iframe>
-    </toy-browser>
-    <h1>&nbsp;</h1>
-    <h3>view-source://</h3>
-    <textarea id="sourcecode" rows="20" cols="80">
-      <!DOCTYPE html>
-      <html>
-        <head>
-          <meta charset="utf-8">
-          <title>Minimal Website</title>
-          <style>
-            body { color: #333; background-color: #eee; }
-          </style>
-        </head>
-        <body>
-          <h1>Welcome to my website</h1>
-          <p>This is an extremely minimal but complete website in HTML.</p>
-        </body>
-      </html>
-    </textarea>
-
-    <script type="module">
-      import { pack, Feed } from './tool.js'
-      console.log('Function pack() imported successfully', pack)
-      const checkpoints = []
-      async function generate() {
-        if (nEl('prompt').disabled) return
-        setLoading(true)
-        const prompt = nEl("prompt").value
-        const srcEl = nEl("sourcecode")
-        const src = srcEl.value
-        const res = await fetch('/designer/do', {
-          'method': 'POST',
-          'headers': { 'Content-Type': 'application/json' },
-          body:  JSON.stringify({ html: src, prompt })
-        }).catch(err => {
-          setLoading(false)
-          console.error(err)
-        })
-        if (res.status === 200) {
-          const data = await res.json()
-          checkpoints.push({ html: src, prompt })
-          srcEl.value = data.html
-          refresh()
-        }
-        setLoading(false)
-      }
-
-      function refresh () {
-        console.info('Rerender')
-        const src = nEl('sourcecode').value
-        const frame = nEl('render').srcdoc = src
-      }
-
-      function back () {
-        console.log('BackButton Pressed')
-        if (!checkpoints.length) return
-        const { html, prompt } = checkpoints.pop()
-        nEl('sourcecode').value = html
-        nEl('prompt').value = prompt
-        refresh()
-      }
-
-      function nEl(id) { return document.getElementById(id) }
-
-      function setLoading (visible) {
-        nEl('prompt').disabled = !!visible
-        if (visible) nEl('spinner').style.display = 'inline-block'
-        else nEl('spinner').style.display = 'none'
-      }
-
-      function main () {
-        nEl('prompt').addEventListener('keyup', function(event) {
-          if (event.keyCode === 13) generate()
-        })
-        refresh()
-        setLoading(false)
-        console.log('booted')
-        // Add on click on back button.
-        nEl('btn-back').addEventListener('click', back)
-        nEl('btn-generate').addEventListener('click', generate)
-        nEl('btn-publish').addEventListener('click', share)
-        nEl('sourcecode').addEventListener('change', refresh)
-      }
-
-      async function share () {
-        console.log('Publishing website')
-        const srcEl = nEl("sourcecode")
-        const src = srcEl.value
-
-        const { sk, pk } = Feed.signPair()
-        console.log('secret, public', sk.toString('hex'), pk.toString('hex'))
-
-        const feed = pack(sk, src.trim())
-        console.log(typeof feed)
-        const payload = { html: src };
-        const endpoint = "/silo/" + pk.toString('hex')
-        const res = await fetch(endpoint, {
-          method: 'POST',
-          headers: { 'Content-Type': 'pico/feed' },
-          body: feed.buf.slice(0, feed.tail)
-        })
-
-        if (res.status !== 201) {
-          return
-          console.error('Something went wrong:', await res.text())
-        }
-
-        console.log('Successfully published to', endpoint)
-        // TODO: give endpoint/url to user so they can share
-
-        // TODO: spara secret key till localstorage så användare
-        // kan uppdatera sin hemsida.
-        // TODO: window.localStorage.setItem('mypage1', sk)
-      }
-
-      document.addEventListener('DOMContentLoaded', main)
-    </script>
+    <hero class="flex col xcenter">
+      <h1><samp>Pico Designer</h1>
+      <h2>
+        Create &amp; Publish a
+          <a href="https://github.com/decentlabs-north/pops/blob/master/POP-04.md">POP-04</a>
+        website in <samp>0</samp> minutes.<br/>
+        Describe your app in the prompt:<br/>
+      </h2>
+    </hero>
+    <div id="spinner" class="lds-spinner" style="display:none"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+    <main-app></main-app>
+    <footer>
+      Created with distilled rage
+      | 2015-2023 🄯 DLNorth, All wrongs reversed
+    </footer>
+    <script type="module" src="designer.js"></script>
   </body>
 </html>
