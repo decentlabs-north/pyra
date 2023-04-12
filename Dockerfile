@@ -10,6 +10,7 @@ ENV NODE_ENV=production
 COPY .git ./.git
 RUN apk add git \
   && git reset --hard \
-  && yarn
+  && yarn \
+  && yarn build
 
 CMD yarn start
