@@ -1,13 +1,14 @@
 import Tonic from '@socketsupply/tonic'
-import { mode } from './logic.js'
+import { combine } from 'piconuro'
+import { mode, loading } from './logic.js'
 
 export class MainApp extends Tonic {
   connected () {
-    this.disconnected = mode(mode => this.reRender(prev => ({ ...prev, mode })))
+    this.disconnected = combine({ mode, loading })(state => this.reRender(prev => ({ ...prev, ...state })))
   }
 
   render () {
-    const { mode } = this.props
+    const { mode, loading } = this.props
     const mainArea = mode === 'preview'
       ? this.html`<sandbox-preview></sandbox-preview>`
       : this.html`<code-editor></code-editor>`
@@ -15,6 +16,9 @@ export class MainApp extends Tonic {
     return this.html`
        <main class="flex column start xstretch">
          <publish-dialog></publish-dialog>
+         <dialog id="globalLoader" style="background-color: #008080;" ${loading ? 'open' : ''}>
+          <div class="lds-spinner" style="display: inline-block"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+         </dialog>
          <main-menu></main-menu>
          <div class="flex row start">
           <side-panel></side-panel>
@@ -38,6 +42,9 @@ export class MainApp extends Tonic {
         padding: 2px;
         margin-bottom: 4em;
       }
+
+      /* ai-minified spinner */
+      .lds-spinner{display:inline-block;position:relative;width:80px;height:80px}.lds-spinner div{transform-origin:40px 40px;animation:lds-spinner 1.2s linear infinite}.lds-spinner div:after{content:" ";display:block;position:absolute;top:3px;left:37px;width:6px;height:18px;border-radius:20%;background:#fff}.lds-spinner div:nth-child(1){transform:rotate(0deg);animation-delay:-1.1s}.lds-spinner div:nth-child(2){transform:rotate(30deg);animation-delay:-1s}.lds-spinner div:nth-child(3){transform:rotate(60deg);animation-delay:-0.9s}.lds-spinner div:nth-child(4){transform:rotate(90deg);animation-delay:-0.8s}.lds-spinner div:nth-child(5){transform:rotate(120deg);animation-delay:-0.7s}.lds-spinner div:nth-child(6){transform:rotate(150deg);animation-delay:-0.6s}.lds-spinner div:nth-child(7){transform:rotate(180deg);animation-delay:-0.5s}.lds-spinner div:nth-child(8){transform:rotate(210deg);animation-delay:-0.4s}.lds-spinner div:nth-child(9){transform:rotate(240deg);animation-delay:-0.3s}.lds-spinner div:nth-child(10){transform:rotate(270deg);animation-delay:-0.2s}.lds-spinner div:nth-child(11){transform:rotate(300deg);animation-delay:-0.1s}.lds-spinner div:nth-child(12){transform:rotate(330deg);animation-delay:0}@keyframes lds-spinner{0%{opacity:1}100%{opacity:0}}
     `
   }
 }

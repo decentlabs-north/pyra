@@ -42,7 +42,7 @@ export class MainMenu extends Tonic {
           <button id="btn-mode">${mode === 'preview' ? 'source' : 'boot'}</button>
           <button id="btn-undo">⬅️</button>
           <button id="btn-redo">➡️</button>
-          <input type="text" id="prompt" placeholder="A social site for hamsters">
+          <input type="text" id="prompt" placeholder="Example: A social site for hamsters with orange theme">
           <button id="btn-generate">🧠</button>
           <button id="btn-publish" title="Publish page">🚀 </button>
         </div>
