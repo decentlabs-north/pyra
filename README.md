@@ -11,9 +11,11 @@
 ## Use
 
 ```bash
-$ yarn && yarn start
+$ yarn
+yarn start # Start backend on port 5000
+yarn designer # Start frontend on port 5001
 ```
-Point your browser to localhost:5000 and enjoy!
+Point your browser to localhost:5001 and enjoy!
 
 
 ## Run production
