@@ -58,6 +58,7 @@ const $keys = memo(init(Feed.signPair(),
       // ask for secret via prompt
       if (sk) {
         console.info('Secret found in store')
+        sk = Buffer.from(sk, 'hex')
         persisted = true
       } else {
         const input = window.prompt('Input secret for site to edit or press cancel to fork')
@@ -71,6 +72,7 @@ const $keys = memo(init(Feed.signPair(),
     }
     if (!persisted) window.localStorage.setItem('site' + pair.pk.toString('hex'), pair.sk.toString('hex'))
     window.location.hash = 'site' + pair.pk.toString('hex')
+    console.info('Editing site', pair)
     return pair
   })
 ))
