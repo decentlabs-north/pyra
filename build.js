@@ -50,5 +50,5 @@ async function serve (port) {
 if (production) {
   build()
 } else {
-  serve(5000)
+  serve(5001)
 }

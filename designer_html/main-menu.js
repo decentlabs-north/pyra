@@ -34,7 +34,6 @@ export class MainMenu extends Tonic {
 
   render () {
     const { mode } = this.props
-    console.log('re-render')
     return this.html`
       <nav class="flex row space-between">
         <!-- left of space -->

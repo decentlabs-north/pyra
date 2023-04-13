@@ -191,7 +191,7 @@ export function shortHash (input) {
  */
 export function bindInput (element, output, onenter, options = {}) {
   const prevent = options.prevent ?? false
-  console.info('bindInput(', element, output, onenter, ')')
+  // console.info('bindInput(', element, output, onenter, ')')
   const update = ev => {
     const v = ev.target.value
     if (typeof output === 'function') output(v)

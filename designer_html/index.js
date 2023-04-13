@@ -5,6 +5,7 @@ import { SandboxPreview } from './sandbox-preview.js'
 import { MainMenu } from './main-menu.js'
 import { SidePanel } from './side-panel.js'
 import { PublishDialog } from './publish-dialog.js'
+import { TopSites } from './top-sites.js'
 
 for (const component of [
   MainApp,
@@ -12,5 +13,6 @@ for (const component of [
   SandboxPreview,
   MainMenu,
   SidePanel,
-  PublishDialog
+  PublishDialog,
+  TopSites
 ]) Tonic.add(component)

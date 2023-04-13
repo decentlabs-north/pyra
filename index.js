@@ -5,6 +5,7 @@ import { Level } from 'level'
 import SSL from 'greenlock-express'
 import Designer from './gptdesigner.js'
 import { join } from 'node:path'
+import cors from 'cors'
 
 const PORT = parseInt(process.env.PORT ?? 5000)
 const STATIC = process.env.STATIC ?? 'pub/'
@@ -16,6 +17,7 @@ export default function Backend () {
   const assets = sirv(STATIC)
   const db = new Level(DB)
   const silo = WebSilo(db)
+  silo.use(cors())
   return polka()
     .use(assets)
     .use('/designer', Designer())

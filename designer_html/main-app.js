@@ -25,6 +25,7 @@ export class MainApp extends Tonic {
           <div class="flex column grow3">${mainArea}</div>
          </div>
        </main>
+       <top-sites></top-sites>
     `
   }
 

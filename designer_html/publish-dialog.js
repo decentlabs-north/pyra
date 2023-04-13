@@ -50,7 +50,6 @@ export class PublishDialog extends Tonic {
   }
 
   render () {
-    console.log('prps', this.props)
     const { showDialog, urls, phex, name, nameState } = this.props
     if (!urls?.length) return
 
