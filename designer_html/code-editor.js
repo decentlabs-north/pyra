@@ -1,6 +1,6 @@
 import Tonic from '@socketsupply/tonic'
 import { combine } from 'piconuro'
-import { sourceCode, setSourceCode, headers } from './logic.js'
+import { sourceCode, setSourceCode, headers, bindInput } from './logic.js'
 
 export class CodeEditor extends Tonic {
   // Connects neuron output to tonic input + cleanup on destroy
@@ -9,8 +9,8 @@ export class CodeEditor extends Tonic {
   }
 
   change (event) {
-    const el = Tonic.match(event.target, '#code')
-    if (el) setSourceCode(el.value)
+    const codeArea = Tonic.match(event.target, '#code')
+    if (codeArea) setSourceCode(codeArea.value)
   }
 
   render () {
@@ -21,6 +21,10 @@ export class CodeEditor extends Tonic {
       <textarea id="headers">${headers}</textarea>
       <textarea id="code">${sourceCode}</textarea>
     `
+  }
+
+  updated () {
+    // bindInput(this.querySelector('#code'), setSourceCode, null, { prevent: true })
   }
 
   static stylesheet () {

@@ -6,16 +6,17 @@ import {
   redo,
   think,
   // Neurons
-  promptLine,
   setPromptLine,
   mode,
-  toggleMode
+  toggleMode,
+  // Helper
+  bindInput
 } from './logic.js'
 import { setShowPublishDialog } from './publish-dialog.js'
 
 export class MainMenu extends Tonic {
   connected () {
-    this.disconnected = combine({ promptLine, mode })(state => this.reRender(prev => ({ ...prev, ...state })))
+    this.disconnected = combine({ mode })(state => this.reRender(prev => ({ ...prev, ...state })))
   }
 
   click (e) {
@@ -32,8 +33,8 @@ export class MainMenu extends Tonic {
   }
 
   render () {
-    const { promptLine, mode } = this.props
-    console.log('prompt', promptLine)
+    const { mode } = this.props
+    console.log('re-render')
     return this.html`
       <nav class="flex row space-between">
         <!-- left of space -->
@@ -41,7 +42,7 @@ export class MainMenu extends Tonic {
           <button id="btn-mode">${mode === 'preview' ? 'source' : 'boot'}</button>
           <button id="btn-undo">⬅️</button>
           <button id="btn-redo">➡️</button>
-          <input type="text" id="prompt" value="${promptLine}">
+          <input type="text" id="prompt" placeholder="A social site for hamsters">
           <button id="btn-generate">🧠</button>
           <button id="btn-publish" title="Publish page">🚀 </button>
         </div>
@@ -51,6 +52,10 @@ export class MainMenu extends Tonic {
         </div>
       </nav>
     `
+  }
+
+  updated () {
+    bindInput(this.querySelector('#prompt'), setPromptLine, think)
   }
 
   static stylesheet () {
