@@ -35,7 +35,7 @@ export default function Backend () {
     .use(assets)
     .use('/designer', Designer())
     .use('/silo', silo)
-    .use('/.well_known', nip05)
+    .use('/.well-known', nip05)
 }
 if (process.env.NODE_ENV === 'production') {
   process.on('unhandledRejection', err => console.error('Unhandled rejection:', err))
