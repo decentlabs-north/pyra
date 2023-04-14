@@ -1,6 +1,7 @@
 import sirv from 'sirv'
 import polka from 'polka'
 import WebSilo from 'picotool/web-silo.js'
+import send from '@polka/send-type'
 import { Level } from 'level'
 import SSL from 'greenlock-express'
 import Designer from './gptdesigner.js'
@@ -13,6 +14,16 @@ const DATA = process.env.DATA ?? 'data/'
 const DB = join(DATA, 'silo.lvl')
 const MAINTAINER = process.env.MAINTAINER ?? 'bob@tld.com'
 
+// This dosen't belong here - we're aware. LBD
+const nip05 = polka()
+  .use(cors())
+  .get('.well_known/nostr.json', (req, res) => {
+    send(res, 200, {
+      telamon: '0149170fe78b061ce6c7295fff2daa303f710ba17efd8fafd8343292b4295e84',
+      Wonni: 'b7e9d0239b67f226503b50d53108a2378d497c1c86a521c44e7b1bc254889064'
+    })
+  })
+
 export default function Backend () {
   const assets = sirv(STATIC)
   const db = new Level(DB)
@@ -22,6 +33,7 @@ export default function Backend () {
     .use(assets)
     .use('/designer', Designer())
     .use('/silo', silo)
+    .use(nip05)
 }
 if (process.env.NODE_ENV === 'production') {
   process.on('unhandledRejection', err => console.error('Unhandled rejection:', err))
