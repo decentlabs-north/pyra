@@ -14,18 +14,31 @@ export class MainApp extends Tonic {
       : this.html`<code-editor></code-editor>`
 
     return this.html`
-       <main class="flex column start xstretch">
-         <publish-dialog></publish-dialog>
-         <dialog id="globalLoader" style="background-color: #008080;" ${loading ? 'open' : ''}>
-          <div class="lds-spinner" style="display: inline-block"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
-         </dialog>
-         <main-menu></main-menu>
-         <div class="flex row start">
-          <side-panel></side-panel>
-          <div class="flex column grow3">${mainArea}</div>
-         </div>
-       </main>
-       <top-sites></top-sites>
+       <!-- | Designer | Topsites | About | -->
+       <tabs>
+
+         <section name="Designer">
+           <main class="flex column start xstretch">
+             <publish-dialog></publish-dialog>
+             <dialog id="globalLoader" style="background-color: #008080;" ${loading ? 'open' : ''}>
+              <div class="lds-spinner" style="display: inline-block"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+             </dialog>
+             <main-menu></main-menu>
+             <div class="flex row start">
+              <side-panel></side-panel>
+              <div class="flex column grow3">${mainArea}</div>
+             </div>
+           </main>
+         </section>
+
+         <section name="Top Sites">
+           <top-sites></top-sites>
+         </section>
+
+         <section name="About">
+          <article>It's done when it's done</article>
+         </section>
+       </tabs>
     `
   }
 
