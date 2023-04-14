@@ -81,7 +81,7 @@ export class PublishDialog extends Tonic {
             <p>Create these records at your DNS-provider:</p>
             <samp>
               domain.tld A 3600 34.244.37.82<br/>
-              domain.tld TXT 3600 POP04#${phex}
+              domain.tld TXT 3600 site${phex}
             </samp>
           </details>
         </div>

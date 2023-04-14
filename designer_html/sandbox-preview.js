@@ -1,18 +1,29 @@
 import Tonic from '@socketsupply/tonic'
 import { sourceCode } from './logic.js'
+import { bootloader0 } from './boot/index.js'
 
 export class SandboxPreview extends Tonic {
-  // Connects neuron output to tonic input + cleanup on destroy
   connected () {
-    this.disconnected = sourceCode(code => this.reRender(prev => ({ ...prev, code })))
+    // this.disconnected = sourceCode(code => this.reRender(prev => ({ ...prev, code })))
+    this.disconnected = sourceCode(code => {
+      this.code = code
+      this.reBoot()
+    })
   }
 
   render () {
-    const { code } = this.props
-    if (!code) return this.html`<pre>No Source Code</pre>`
-    return this.html`
-      <iframe id="render" srcdoc="${code}"></iframe>
-    `
+    return this.html`<iframe id="render"></iframe>`
+  }
+
+  reBoot () {
+    const frame = this.querySelector('#render')
+    if (!this._loaded) {
+      bootloader0(frame)
+      this._loaded = true
+    }
+    console.info('reBoot site', frame)
+    window.rnd = frame
+    frame.srcdoc = this.code
   }
 
   static stylesheet () {

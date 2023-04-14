@@ -13,9 +13,14 @@ import {
   gate,
   memo
 } from 'piconuro'
-
 import Feed from 'picofeed'
-import { pack } from 'picotool'
+import { pack, unpack, fetchHttp, pushHttp } from 'picotool'
+
+const $silos = init([
+  'https://pyra.se/silo'
+  // 'http://localhost:5000/silo'
+  // TODO: add more silos
+])
 
 const [_mode, setMode] = write('preview')
 export const toggleMode = () => setMode(get(mode) === 'preview' ? 'code' : 'preview')
@@ -44,15 +49,33 @@ const [$sourceCode, _setSourceCode] = write(`
 export const setSourceCode = _setSourceCode
 export const sourceCode = mute($sourceCode, code => code.trim())
 
-// The signing secret belongs to the website and indirectly to the author.
 const $keys = memo(init(Feed.signPair(),
+  /*
+   * For some unimaginable reason the entire site/key state is loaded
+   * during key-initialization..
+   * I left as much comments here as I could.
+   */
   mute(init(Feed.signPair()), async pair => {
     let persisted = false
     // Attempt to load public key via hastag
     if (window.location.hash.match(/^#?site[0-9A-Fa-f]{64}/)) {
       const pk = Buffer.from(window.location.hash.replace(/^#?site/, ''), 'hex')
+      // THIS DOES NOT BELONG HERE
+      /*
       console.info('Attempting to load site', pk.toString('hex'))
-      // TODO: attempt to fetch code from silos
+      try {
+        const feeds = await Promise.all(
+          get($silos).map(silo => fetchHttp(silo + '/' + pk.toString('hex')))
+        )
+        const site = feeds.map(f => unpack(f)).sort((a, b) => b.date - a.date)[0]
+        setSourceCode(site.body)
+        setHeaders( // Convert headers object to individual lines
+          Object.keys(site.headers).reduce((txt, key) => txt + `${key}: ${site.headers[key]}\n`, '')
+        )
+      } catch (error) {
+        console.warn('Failed fetching site', error)
+      }
+      */
       // check localstorage for secret
       let sk = window.localStorage.getItem('site' + pk.toString('hex'))
       // ask for secret via prompt
@@ -78,9 +101,6 @@ const $keys = memo(init(Feed.signPair(),
 ))
 
 export const phex = mute($keys, keys => keys?.pk.toString('hex'))
-const $silos = init([
-  'https://pyra.se/silo' // some relative web-silo
-])
 
 export const $urls = mute(
   combine($keys, $silos),
@@ -102,14 +122,9 @@ export async function publish () {
   const src = get(sourceCode)
   const { sk } = get($keys)
   const feed = pack(sk, src)
-  const body = feed.buf.slice(0, feed.tail)
 
   const result = await Promise.all(urls.map(async url => {
-    const res = await fetch(url, {
-      method: 'POST',
-      headers: { 'Content-Type': 'pico/feed' },
-      body
-    })
+    const res = await pushHttp(url, feed)
     // TODO: handle try catch for thrown errors
     if (res.status !== 201) {
       console.error('something went wrong:', await res.text())
