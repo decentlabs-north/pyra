@@ -19,8 +19,10 @@ const nip05 = polka()
   .use(cors())
   .get('/nostr.json', (req, res) => {
     send(res, 200, {
-      telamon: '0149170fe78b061ce6c7295fff2daa303f710ba17efd8fafd8343292b4295e84',
-      Wonni: 'b7e9d0239b67f226503b50d53108a2378d497c1c86a521c44e7b1bc254889064'
+      names: {
+        telamon: '0149170fe78b061ce6c7295fff2daa303f710ba17efd8fafd8343292b4295e84',
+        Wonni: 'b7e9d0239b67f226503b50d53108a2378d497c1c86a521c44e7b1bc254889064'
+      }
     })
   })
 
