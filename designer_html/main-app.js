@@ -7,6 +7,26 @@ export class MainApp extends Tonic {
     this.disconnected = combine({ mode, loading })(state => this.reRender(prev => ({ ...prev, ...state })))
   }
 
+  constructor(){
+    super()
+    this.active = 'designer'
+  }
+
+  click(ev){
+    if (Tonic.match(ev.target, '#btn-designer')){
+        this.active='designer'
+        this.reRender()
+    }
+    if (Tonic.match(ev.target, '#btn-top')){
+        this.active='top'
+        this.reRender()
+    }
+    if (Tonic.match(ev.target, '#btn-about')){
+        this.active='about'
+        this.reRender()
+    }
+  }
+
   render () {
     const { mode, loading } = this.props
     const mainArea = mode === 'preview'
@@ -14,36 +34,61 @@ export class MainApp extends Tonic {
       : this.html`<code-editor></code-editor>`
 
     return this.html`
-       <!-- | Designer | Topsites | About | -->
-       <tabs>
-
-         <section name="Designer">
-           <main class="flex column start xstretch">
-             <publish-dialog></publish-dialog>
-             <dialog id="globalLoader" style="background-color: #008080;" ${loading ? 'open' : ''}>
-              <div class="lds-spinner" style="display: inline-block"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
-             </dialog>
-             <main-menu></main-menu>
-             <div class="flex row start">
-              <side-panel></side-panel>
-              <div class="flex column grow3">${mainArea}</div>
-             </div>
-           </main>
-         </section>
-
-         <section name="Top Sites">
-           <top-sites></top-sites>
-         </section>
-
-         <section name="About">
-          <article>It's done when it's done</article>
-         </section>
-       </tabs>
+      <div class=button-container>
+        <button id="btn-designer" class="switch-button">Designer</button>
+        <button id="btn-top" class="switch-button">Top Sites</button>
+        <button id="btn-about" class="switch-button">About</button>
+      </div>
+      
+        <section class="tab ${this.active === 'designer' && 'active'}">
+          <main class="flex column start xstretch">
+            <publish-dialog></publish-dialog>
+            <dialog id="globalLoader" style="background-color: #008080;" ${loading ? 'open' : ''}>
+            <div class="lds-spinner" style="display: inline-block"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+            </dialog>
+            <main-menu></main-menu>
+            <div class="flex row start">
+            <side-panel></side-panel>
+            <div class="flex column grow3">${mainArea}</div>
+            </div>
+          </main>
+        </section>
+          
+        <section class="tab ${this.active === 'top' && 'active'}">
+          <top-sites></top-sites>
+        </section>
+        
+        <section class="tab ${this.active === 'about' && 'active'}">
+          <article style="text-align: center;">It's done when it's done</article>
+        </section>
     `
   }
 
   static stylesheet () {
     return `
+      .tab {
+        display: none;
+      }
+      
+      .tab.active {
+        display: block;
+      }
+      .button-container{
+        display: flex;
+        justify-content: center;
+      }
+      .switch-button {
+        background-color: purple;
+        border: none;
+        color: white;
+        padding: 10px 20px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        margin: 8px 10px 20px;
+        cursor: pointer;
+      }
       main {
         width: 100%;
         display: block;
