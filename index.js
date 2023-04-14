@@ -17,7 +17,7 @@ const MAINTAINER = process.env.MAINTAINER ?? 'bob@tld.com'
 // This dosen't belong here - we're aware. LBD
 const nip05 = polka()
   .use(cors())
-  .get('.well_known/nostr.json', (req, res) => {
+  .get('/nostr.json', (req, res) => {
     send(res, 200, {
       telamon: '0149170fe78b061ce6c7295fff2daa303f710ba17efd8fafd8343292b4295e84',
       Wonni: 'b7e9d0239b67f226503b50d53108a2378d497c1c86a521c44e7b1bc254889064'
@@ -33,7 +33,7 @@ export default function Backend () {
     .use(assets)
     .use('/designer', Designer())
     .use('/silo', silo)
-    .use(nip05)
+    .use('/.well_known', nip05)
 }
 if (process.env.NODE_ENV === 'production') {
   process.on('unhandledRejection', err => console.error('Unhandled rejection:', err))
