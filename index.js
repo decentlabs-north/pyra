@@ -21,7 +21,8 @@ const nip05 = polka()
     send(res, 200, {
       names: {
         telamon: '0149170fe78b061ce6c7295fff2daa303f710ba17efd8fafd8343292b4295e84',
-        Wonni: 'b7e9d0239b67f226503b50d53108a2378d497c1c86a521c44e7b1bc254889064'
+        Wonni: 'b7e9d0239b67f226503b50d53108a2378d497c1c86a521c44e7b1bc254889064',
+        luxar: 'fd681d432d0bd7371ee7d06f35784ac7653e79a39a3d178873a14a98e29c4ae0'
       }
     })
   })
@@ -37,6 +38,7 @@ export default function Backend () {
     .use('/silo', silo)
     .use('/.well-known', nip05)
 }
+
 if (process.env.NODE_ENV === 'production') {
   process.on('unhandledRejection', err => console.error('Unhandled rejection:', err))
   const b = Backend()

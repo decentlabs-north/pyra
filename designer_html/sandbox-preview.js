@@ -1,18 +1,53 @@
 import Tonic from '@socketsupply/tonic'
-import { sourceCode } from './logic.js'
+import { sourceCode, phex } from './logic.js'
 import { bootloader0 } from './boot/index.js'
 
 export class SandboxPreview extends Tonic {
   connected () {
     // this.disconnected = sourceCode(code => this.reRender(prev => ({ ...prev, code })))
-    this.disconnected = sourceCode(code => {
+    const unsubscribeReboot = sourceCode(code => {
       this.code = code
       this.reBoot()
     })
+    const unsubscribeRender = phex(hex => this.reRender(state => ({ ...state, hex })))
+
+    this.disconnected = () => {
+      unsubscribeRender()
+      unsubscribeReboot()
+    }
   }
 
   render () {
     return this.html`<iframe id="render"></iframe>`
+    /* return this.html`<iframe
+      id="render"
+      allow="camera; display-capture; geolocation; microphone"
+      allowfullscreen="false"
+      allowpaymentrequest="true"
+      allowtransparency="false"
+      loading="lazy"
+      sandbox="
+        allow-forms
+        allow-modals
+        allow-popups
+        allow-same-origin
+        allow-top-navigation-by-user-activation
+      ">
+    </iframe>`
+    */
+    // Excluded options for sandbox
+    // allow-pointer-lock
+    // allow-downloads
+    // allow-presentation
+    // allow-scripts
+  }
+
+  /**
+   * TODO: backend header tweaks if necessary:
+   * referrer-policy: no-referrer
+   */
+  updated () {
+    this.reBoot()
   }
 
   reBoot () {
