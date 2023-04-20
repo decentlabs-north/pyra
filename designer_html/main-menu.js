@@ -10,13 +10,15 @@ import {
   mode,
   toggleMode,
   // Helper
-  bindInput
+  bindInput,
+  promptLine,
+  loading
 } from './logic.js'
 import { setShowPublishDialog } from './publish-dialog.js'
 
 export class MainMenu extends Tonic {
   connected () {
-    this.disconnected = combine({ mode })(state => this.reRender(prev => ({ ...prev, ...state })))
+    this.disconnected = combine({ mode, loading })(state => this.reRender(prev => ({ ...prev, ...state })))
   }
 
   click (e) {
@@ -33,7 +35,7 @@ export class MainMenu extends Tonic {
   }
 
   render () {
-    const { mode } = this.props
+    const { mode, loading } = this.props
     return this.html`
       <nav class="flex row space-between">
         <!-- left of space -->
@@ -41,7 +43,7 @@ export class MainMenu extends Tonic {
           <button id="btn-mode">${mode === 'preview' ? 'source' : 'boot'}</button>
           <button id="btn-undo">⬅️</button>
           <button id="btn-redo">➡️</button>
-          <input type="text" id="prompt" placeholder="Example: A social site for hamsters with orange theme">
+          <input ${loading ? 'disabled': ''} type="text" id="prompt" placeholder="Example: A social site for hamsters with orange theme">
           <button id="btn-generate">🧠</button>
           <button id="btn-publish" title="Publish page">🚀 </button>
         </div>
@@ -54,7 +56,7 @@ export class MainMenu extends Tonic {
   }
 
   updated () {
-    bindInput(this.querySelector('#prompt'), setPromptLine, think)
+    bindInput(this.querySelector('#prompt'), setPromptLine, think, {input: promptLine})
   }
 
   static stylesheet () {

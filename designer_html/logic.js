@@ -206,7 +206,9 @@ export function shortHash (input) {
  */
 export function bindInput (element, output, onenter, options = {}) {
   const prevent = options.prevent ?? false
-  // console.info('bindInput(', element, output, onenter, ')')
+  const oldValue = options.input ? get(options.input) : ''
+  element.placeholder = oldValue
+  // console.info('bindInput(', element, output, onenter, oldValue,')')
   const update = ev => {
     const v = ev.target.value
     if (typeof output === 'function') output(v)
@@ -215,7 +217,6 @@ export function bindInput (element, output, onenter, options = {}) {
   element.addEventListener('change', update)
   element.addEventListener('keyup', ev => {
     if (prevent) ev.preventDefault()
-    console.log(ev.key)
     ev.key === 'Enter' && typeof onenter === 'function'
       ? update(ev) && onenter(ev.target.value)
       : update(ev)
