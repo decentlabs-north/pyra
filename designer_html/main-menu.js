@@ -15,10 +15,12 @@ import {
   loading
 } from './logic.js'
 import { setShowPublishDialog } from './publish-dialog.js'
+import { getArticles } from './nostr'
 
 export class MainMenu extends Tonic {
   connected () {
-    this.disconnected = combine({ mode, loading })(state => this.reRender(prev => ({ ...prev, ...state })))
+    const articles = getArticles()
+    this.disconnected = combine({ mode, loading, articles })(state => this.reRender(prev => ({ ...prev, ...state })));
   }
 
   click (e) {
@@ -35,7 +37,24 @@ export class MainMenu extends Tonic {
   }
 
   render () {
-    const { mode, loading } = this.props
+    const { mode, loading, articles } = this.props
+    if (typeof articles !== "undefined") {
+      const mappedArray = articles.map((article) => article.tags);
+      console.log(mappedArray.length >11 ? mappedArray.map(m => m) : 'nothing to show');
+      const filteredTags = articles.flatMap((article) => article.tags)
+                            .filter((tag) => tag.includes('nostr'));
+      if (typeof filteredTags !== "undefined") {
+        
+        // console.log(filteredTags); 
+      }else{
+        console.log('have no filtered tags found')
+      }
+
+    } else {
+      // console.log("Articles are not yet available.");
+    }
+    
+    // console.log(articles)
     return this.html`
       <nav class="flex row space-between">
         <!-- left of space -->
