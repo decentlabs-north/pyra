@@ -39,6 +39,7 @@
     "cors": "^2.8.5",
     "greenlock-express": "^4.0.3",
     "level": "^8.0.0",
+    "nostr-tools": "^1.10.1",
     "openai": "^3.2.1",
     "picofeed": "^3.4.2",
     "picotool": "^0.1.7",
