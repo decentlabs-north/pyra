@@ -50,11 +50,17 @@ export class SandboxPreview extends Tonic {
     this.reBoot()
   }
 
+  /**
+   * Patches the child IFrame with custom Widgets (pico components)
+   * adds
+   * - hitcounter widget
+   * - articles/guestbook widget
+   */
   reBoot () {
     const frame = this.querySelector('#render')
-    if (!this._loaded) {
-      bootloader0(frame)
-      this._loaded = true
+    if (this._patchedFrame !== frame) {
+      bootloader0(frame) // Patch it
+      this._patchedFrame = frame
     }
     console.info('reBoot site', frame)
     window.rnd = frame
